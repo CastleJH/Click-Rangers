@@ -8,6 +8,7 @@ f_b_20 = None
 f_l_20 = None
 f_b_15 = None
 f_l_15 = None
+background_image = None
 
 def PrepareFont():
     global f_b_30, f_l_30, f_b_20, f_l_20, f_b_15, f_l_15
@@ -17,6 +18,11 @@ def PrepareFont():
     f_l_20 = pygame.font.Font("resources/Stardust.ttf", 20)
     f_b_15 = pygame.font.Font("resources/Stardust B.ttf", 15)
     f_l_15 = pygame.font.Font("resources/Stardust.ttf", 15)
+
+def PrepareBackgroundImage():
+    global background_image, WINDOW_WIDTH, WINDOW_HEIGHT
+    background_image = pygame.image.load('resources/background.png')
+    background_image = pygame.transform.scale(background_image, (WINDOW_WIDTH, background_image.get_height() / background_image.get_width() * WINDOW_WIDTH))
 
 def DrawText(screen, font, loc, text, color = (255, 255, 255), align = "l"):
     target = font.render(text, True, color)
@@ -29,7 +35,11 @@ def DrawText(screen, font, loc, text, color = (255, 255, 255), align = "l"):
     
     
 def DrawBackground(screen):
-    screen.fill(0)
+    #screen.fill(0)
+    if background_image == None:
+        PrepareBackgroundImage()
+    screen.blit(background_image, (0, -WINDOW_HEIGHT // 3))
+    #screen.fill((0, 0, 0, 250))
     return
 
 def DrawFallingObjects(screen):
@@ -38,7 +48,9 @@ def DrawFallingObjects(screen):
 
 def DrawBottomline(screen):
     global bottom_line_y, WINDOW_WIDTH
+    pygame.draw.rect(screen, (0, 0, 0, 30), (0, bottom_line_y, WINDOW_WIDTH, 500))
     pygame.draw.line(screen, (255, 0, 0), (0, bottom_line_y), (WINDOW_WIDTH, bottom_line_y), 5)
+    
     return 
 
 def DrawUpgradeInfo(screen):

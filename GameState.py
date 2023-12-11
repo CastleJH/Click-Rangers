@@ -56,7 +56,7 @@ def SpawnFallingObjects(delta_seconds):
     spawn_cooltime = 0.0
     
     base_drop_rate = 0.05
-    base_coin_rate = 0.01
+    base_coin_rate = 0.02
     base_heal_orb_rate = 0.01
     base_trap_rate = 0.02
     base_freezer_rate = 0.01
