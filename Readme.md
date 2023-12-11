@@ -31,7 +31,8 @@
 7. USerInput.py: Used for processing user inputs.
 
 
-**Below are links where i got the assets for this project.**
+**Below are links where I got the assets for this project.**
 1. background image: https://opengameart.org/content/ruined-city-background
-2. All other files in /resources are made by myself, so **please don't copy**. 
+2. font files: https://m.blog.naver.com/campanula913/221366697603
+3. All other files in /resources are made by myself, so **please don't copy**. 
    Instead, ask me when you want to use them.
