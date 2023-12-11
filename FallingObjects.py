@@ -179,7 +179,7 @@ class Drop(FallingObject):
     def OnAttacked(self):
         super().OnAttacked()
         self.SetFragmentsColor(False)
-        GetScore(self.score)
+        AddScore(self.score)
                   
     def OnFreezed(self):
         super().OnFreezed()

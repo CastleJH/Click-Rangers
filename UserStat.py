@@ -14,7 +14,7 @@ class EStat(Enum):
         return self.value
 
 class StatData():
-    def __init__(self, _stat_name = "default", _base_stat = 1, _max_level = 5, _cost = 1, _additive_modifier_per_level = 0):
+    def __init__(self, _stat_name = "default", _base_stat = 1, _max_level = 5, _cost = 1, _additive_modifier_per_level = 0, _upgrade_key = 'Q'):
         self.stat_name = _stat_name
         #unchangeable
         self.base_stat = _base_stat
@@ -25,6 +25,7 @@ class StatData():
         self.level = 1
         self.cost = _cost
         self.real_cost = round(self.cost)
+        self.upgrade_key = _upgrade_key
         
     def Upgrade(self):
         if self.level < self.max_level:
@@ -36,19 +37,19 @@ class StatData():
         else: 
             return False
        
-user_stats = [      #stat name,     base stat,  max level,  base cost,  stat modifier
-    StatData(       "Mouse Radius", 20,         10,         2,          4),
-    StatData(       "Max HP",       100,        999,        1,          10),
-    StatData(       "Heal Orb",     10,         5,          2,          2),
-    StatData(       "Gold",         1,          5,          2,           1),
-    StatData(       "Fall Speed",   1.0,        10,         2,          -0.05),
-    StatData(       "Freezer",      3.0,        999,        5,          0.2),
-    StatData(       "Chain Lightning", 2,       999,        7,          1),
-    StatData(       "Flame Thrower",   5.0,     999,        7,          0.5)
+user_stats = [      #stat name,     base stat,  max level,  base cost,  stat modifier,  uprade key
+    StatData(       "Radius",       20,         10,         2,          4,          'Q'),
+    StatData(       "Max HP",       100,        999,        1,          10,         'W'),
+    StatData(       "Heal Orb",     10,         5,          2,          2,          'E'),
+    StatData(       "Gold",         1,          5,          2,          1,          'R'),
+    StatData(       "Fall Speed",   1.0,        10,         2,          -0.05,      'A'),
+    StatData(       "Blizzard",     3.0,        999,        5,          0.2,        'S'),
+    StatData(       "Lightning", 2,       999,        7,          1,          'D'),
+    StatData(       "Flame",   5.0,     999,        7,          0.5,        'F')
 ]
 
 score = 0
-gold = 0
+gold = 10000
 max_hp = user_stats[int(EStat.MAX_HP)].stat
 current_hp = max_hp
 freezer_timer = 0
@@ -68,8 +69,20 @@ def TryDecreaseHP(ammount):
 def TryHealHP(ammount):
     global current_hp
     current_hp = min(max_hp, current_hp + ammount)
-    
-def GetScore(ammount):
+
+def GetScore():
+    global score
+    return score
+
+def GetCurrentHP():
+    global current_hp
+    return current_hp
+
+def GetGold():
+    global gold
+    return gold
+
+def AddScore(ammount):
     global score
     score += ammount
     

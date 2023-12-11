@@ -12,6 +12,7 @@ def main():
     delta_seconds = 0.0
     
     PrepareImage()
+    PrepareFont()
     
     while not done:
         mouse_pos, done = ProcessUserInput()

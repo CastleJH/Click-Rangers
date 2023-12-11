@@ -19,6 +19,10 @@ spawn_cooltime = 0.0
 chain_lightning_targets = []
 
 #---------------function
+def GetGameLevel():
+    global game_level
+    return game_level
+
 def GetFallSpeedModifier():
     freeze_mult = 1.0
     if GetFreezerTimer() > 0.0:
