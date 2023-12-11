@@ -12,6 +12,8 @@ def DrawFallingObjects(screen):
         falling_objects[key].draw(screen)
 
 def DrawBottomline(screen):
+    global bottom_line_y, WINDOW_WIDTH
+    pygame.draw.line(screen, (255, 0, 0), (0, bottom_line_y), (WINDOW_WIDTH, bottom_line_y), 5)
     return 
 
 def DrawUI(screen):

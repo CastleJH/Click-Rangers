@@ -6,7 +6,7 @@ FPS = 60
 WINDOW_WIDTH = 1000
 WINDOW_HEIGHT = 1000
 screen = 0
-bottom_line_y = WINDOW_HEIGHT - 100
+bottom_line_y = WINDOW_HEIGHT - 150
 
 #---------------game state(changed over game)
 game_level = 20

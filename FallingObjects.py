@@ -106,7 +106,7 @@ class FallingObject():
         if self.is_alive:
             if ~self.is_freezed:
                 self.y += fall_speed_modifier * self.base_speed
-                if bottom_line_y + self.radius <= self.y:
+                if bottom_line_y - self.radius + 5 <= self.y:
                     self.OnTouchedLine() 
         else:
             self.del_timer += delta_seconds
