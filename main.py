@@ -9,14 +9,15 @@ def main():
     screen = pygame.display.set_mode( (WINDOW_WIDTH, WINDOW_HEIGHT) )
     clock = pygame.time.Clock()
     done = False
+    delta_seconds = 0.0
     
     while not done:
         mouse_pos, done = ProcessUserInput()
             
-        UpdateGameState()
+        UpdateGameState(delta_seconds)
         
         DrawGame(screen, mouse_pos)
-        clock.tick(FPS)
+        delta_seconds = clock.tick(FPS) / 1000.0
         
 if __name__ == "__main__":
     main()

@@ -120,3 +120,9 @@ def GetChaingLightningTimer():
 def GetFlameThrowerTimer():
     global flame_thrower_timer
     return flame_thrower_timer
+
+def DecreaseAttackTypeTimer(delta_seconds):
+    global freezer_timer, chain_lightning_timer, flame_thrower_timer
+    freezer_timer = max(0.0, freezer_timer - delta_seconds)
+    chain_lightning_timer = max(0.0, chain_lightning_timer - delta_seconds)
+    flame_thrower_timer = max(0.0, flame_thrower_timer - delta_seconds)

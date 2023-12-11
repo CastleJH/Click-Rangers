@@ -16,7 +16,12 @@ def DrawUI(screen):
     return
 
 def DrawUserMouse(screen, mouse_pos):
-    pygame.draw.circle(screen, (255, 255, 255), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
+    if GetFlameThrowerTimer() > 0.0:
+        pygame.draw.circle(screen, (255, 0, 0), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
+    elif GetChaingLightningTimer() > 0.0:
+        pygame.draw.circle(screen, (255, 255, 0), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
+    else:
+        pygame.draw.circle(screen, (0, 255, 255), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
         
 def DrawGame(screen, mouse_pos):
     DrawBackground(screen)

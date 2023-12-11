@@ -23,20 +23,20 @@ class FallingObject():
         
         self.is_freezed = False
         self.is_alive = True
-        self.del_counter = 0
+        self.del_timer = 0.0
         
         self.fragments_location = [[0, 0] for i in range(fragments_num)]
         self.fragments_color = [self.base_color for i in range(fragments_num)]
         self.fragments_velocity = [[np.random.uniform(-1.0, 1.0), np.random.uniform(-3.0, -5.0)] for i in range(fragments_num)]
         
-    def update(self, fall_speed_modifier, bottom_line_y):
+    def update(self, delta_seconds, fall_speed_modifier, bottom_line_y):
         if self.is_alive:
             if ~self.is_freezed:
                 self.y += fall_speed_modifier * self.base_speed
                 if bottom_line_y + self.radius <= self.y:
                     self.OnTouchedLine() 
         else:
-            self.del_counter += 1
+            self.del_timer += delta_seconds
             for i, loc in enumerate(self.fragments_location):
                 self.fragments_velocity[i][1] += gravity
                 loc[0] += self.fragments_velocity[i][0]
