@@ -12,9 +12,8 @@ bottom_line_y = WINDOW_HEIGHT - 100
 game_level = 1
 is_playing = True
 is_gameover = False
-
-#---------------falling objects(changed over game)
 new_falling_idx = 0
+counter = 0
 
 #---------------function
 def GetFallSpeedModifier():
@@ -27,9 +26,9 @@ def SpawnFallingObjects():
     base_coin_rate = 0.005
     base_heal_orb_rate = 0.005
     base_trap_rate = 0.005
-    base_freezer_rate = 0.0005
-    base_chain_lightning_rate = 0.0005
-    base_flame_thrower_rate = 0.0005
+    base_freezer_rate = 0.001
+    base_chain_lightning_rate = 0.001
+    base_flame_thrower_rate = 0.001
 
     if np.random.uniform(0.0, 1.0) < base_drop_rate * np.interp(float(min(game_level, 50)), [1.0, 50.0], [1.0, 5.0]):
         AddFallingObject(new_falling_idx, Drop(new_falling_idx, WINDOW_WIDTH))
@@ -67,10 +66,35 @@ def DeleteObjectsOutOfGame():
         if falling_objects[key].del_counter > 10 * FPS:
             remove_list.append(key)
     for key in remove_list:
-        print("removed:", key)
         RemoveFallingObject(key)
         
 def UpdateFallingObjects():
     global falling_objects
     for key in falling_objects:
         falling_objects[key].update(GetFallSpeedModifier(), bottom_line_y)
+        
+def CheckDropsCollision(mouse_pos):
+    global falling_objects, FPS
+    remove_list = []
+    for key in falling_objects:
+        if falling_objects[key].CheckOverlappedCircle(mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat):
+            falling_objects[key].OnAttacked()
+        if falling_objects[key].del_counter > 10 * FPS:
+            remove_list.append(key)
+    for key in remove_list:
+        RemoveFallingObject(key)
+        
+def NormalAttack(mouse_pos):
+    CheckDropsCollision(mouse_pos)
+
+def ChainLightningAttack(mouse_pos):
+    CheckDropsCollision(mouse_pos)
+    
+def UpdateGameState():
+    global counter
+    counter += 1
+    
+    
+    SpawnFallingObjects()
+    UpdateFallingObjects()
+    DeleteObjectsOutOfGame()

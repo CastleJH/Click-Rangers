@@ -1,13 +1,48 @@
 from GameState import *
+import pygame
 
-def CheckDropsCollision(mouse_pos):
-    global falling_objects, FPS
-    remove_list = []
-    print(mouse_pos)
-    for key in falling_objects:
-        if falling_objects[key].CheckOverlappedCircle(mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat):
-            falling_objects[key].OnAttacked()
-        if falling_objects[key].del_counter > 10 * FPS:
-            remove_list.append(key)
-    for key in remove_list:
-        RemoveFallingObject(key)
+def UpgradeMatchingStatWithKey(event):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_q:
+            UpgradeUserStat(GetUserStat(EStat(0)))
+        elif event.key == pygame.K_w:
+            UpgradeUserStat(GetUserStat(EStat(1)))
+        elif event.key == pygame.K_e:
+            UpgradeUserStat(GetUserStat(EStat(2)))
+        elif event.key == pygame.K_r:
+            UpgradeUserStat(GetUserStat(EStat(3)))
+        elif event.key == pygame.K_a:
+            UpgradeUserStat(GetUserStat(EStat(4)))
+        elif event.key == pygame.K_s:
+            UpgradeUserStat(GetUserStat(EStat(5)))
+        elif event.key == pygame.K_d:
+            UpgradeUserStat(GetUserStat(EStat(6)))
+        elif event.key == pygame.K_f:
+            UpgradeUserStat(GetUserStat(EStat(7)))
+            
+def AttackWithUserMouseClick(event, mouse_pos):
+    if GetFlameThrowerTimer() <= 0.0:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if GetChaingLightningTimer() > 0.0:
+                    ChainLightningAttack(mouse_pos)
+                else:
+                    NormalAttack(mouse_pos)
+        
+def AttackWithUserMousePosition(mouse_pos):
+    if GetFlameThrowerTimer() > 0.0:
+        NormalAttack(mouse_pos)
+        
+def ProcessUserInput():
+    mouse_pos = pygame.mouse.get_pos()
+    done = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True    
+        UpgradeMatchingStatWithKey(event)
+        AttackWithUserMouseClick(event, mouse_pos)
+    AttackWithUserMousePosition(mouse_pos)
+    
+    return mouse_pos, done
+    
+        

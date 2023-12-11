@@ -108,3 +108,15 @@ def StartFlameThrower():
     freezer_timer = 0.0
     chain_lightning_timer = 0.0
     flame_thrower_timer = GetUserStat(EStat.FLAME_THROWER).stat
+    
+def GetFreezerTimer():
+    global freezer_timer
+    return freezer_timer
+
+def GetChaingLightningTimer():
+    global chain_lightning_timer
+    return chain_lightning_timer
+
+def GetFlameThrowerTimer():
+    global flame_thrower_timer
+    return flame_thrower_timer
