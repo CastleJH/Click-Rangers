@@ -16,6 +16,7 @@ is_gameover = False
 new_falling_idx = 0
 level_up_timer = 0.0
 spawn_cooltime = 0.0
+chain_lightning_targets = []
 
 #---------------function
 def GetFallSpeedModifier():
@@ -99,8 +100,32 @@ def CheckDropsCollision(mouse_pos):
 def NormalAttack(mouse_pos):
     CheckDropsCollision(mouse_pos)
 
+def custom_sort(FallingObj, mouse_pos):
+    return (FallingObj.x - mouse_pos[0]) ** 2 + (FallingObj.y - mouse_pos[1]) ** 2
+
+def CalcChainLigtningTarget(mouse_pos):
+    global falling_objects
+    ret_list = []
+    obj_list = list(falling_objects.values())
+    sorted_objects = sorted(obj_list, key=lambda obj: custom_sort(obj, mouse_pos))
+    index = 0
+    count = GetUserStat(EStat.CHAIN_LIGHTNING).stat
+    while count != 0 and index < len(sorted_objects):
+        if isinstance(sorted_objects[index], Drop) and sorted_objects[index].is_alive:
+            count -= 1
+            ret_list.append(sorted_objects[index])
+        index += 1
+    return ret_list
+    
+def GetChainLightningTarget():
+    global chain_lightning_targets
+    return chain_lightning_targets
+    
 def ChainLightningAttack(mouse_pos):
-    CheckDropsCollision(mouse_pos)
+    global chain_lightning_targets
+    chain_lightning_targets = CalcChainLigtningTarget(mouse_pos)
+    for drop in chain_lightning_targets:
+        drop.OnAttacked()
     
 def TryIncreaseGameLevel(delta_seconds):
     global level_up_timer, max_game_level, game_level

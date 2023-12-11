@@ -18,7 +18,7 @@ def main():
         
         UpdateGameState(delta_seconds)
         
-        DrawGame(screen, mouse_pos)
+        DrawGame(delta_seconds, screen, mouse_pos)
         delta_seconds = clock.tick(FPS) / 1000.0
         
 if __name__ == "__main__":

@@ -97,7 +97,7 @@ def StartFreezer():
     
 def StartChainLightning():
     global chain_lightning_timer
-    chain_lightning_timer = 5.0
+    chain_lightning_timer = 0.5
 
 def StartFlameThrower():
     global flame_thrower_timer
