@@ -9,7 +9,7 @@ screen = 0
 bottom_line_y = WINDOW_HEIGHT - 100
 
 #---------------game state(changed over game)
-game_level = 1
+game_level = 20
 max_game_level = 50
 is_playing = True
 is_gameover = False
@@ -19,7 +19,10 @@ spawn_cooltime = 0.0
 
 #---------------function
 def GetFallSpeedModifier():
-    return np.clip(0.95 + game_level * 0.05, 1.0, 2.0) * GetUserStat(EStat.FALL_SPEED).stat
+    freeze_mult = 1.0
+    if GetFreezerTimer() > 0.0:
+        freeze_mult = 0.5
+    return np.clip(0.98 + game_level * 0.02, 1.0, 2.0) * GetUserStat(EStat.FALL_SPEED).stat * freeze_mult
 
 def SpawnFallingObjects(delta_seconds):
     global new_falling_idx, spawn_cooltime
@@ -32,14 +35,14 @@ def SpawnFallingObjects(delta_seconds):
     spawn_cooltime = 0.0
     
     base_drop_rate = 0.05
-    base_coin_rate = 0.005
-    base_heal_orb_rate = 0.005
-    base_trap_rate = 0.005
-    base_freezer_rate = 0.001
-    base_chain_lightning_rate = 0.001
-    base_flame_thrower_rate = 0.001
+    base_coin_rate = 0.01
+    base_heal_orb_rate = 0.01
+    base_trap_rate = 0.02
+    base_freezer_rate = 0.01
+    base_chain_lightning_rate = 0.01
+    base_flame_thrower_rate = 0.01
 
-    if np.random.uniform(0.0, 1.0) < base_drop_rate * np.interp(float(game_level), [1.0, 50.0], [1.0, 5.0]):
+    if np.random.uniform(0.0, 1.0) < base_drop_rate * np.interp(float(game_level), [1.0, 50.0], [1.0, 10.0]):
         AddFallingObject(new_falling_idx, Drop(new_falling_idx, WINDOW_WIDTH))
         new_falling_idx += 1
         

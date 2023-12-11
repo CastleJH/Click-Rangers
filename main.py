@@ -11,9 +11,11 @@ def main():
     done = False
     delta_seconds = 0.0
     
+    PrepareImage()
+    
     while not done:
         mouse_pos, done = ProcessUserInput()
-            
+        
         UpdateGameState(delta_seconds)
         
         DrawGame(screen, mouse_pos)

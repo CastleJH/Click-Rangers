@@ -92,21 +92,15 @@ def UpgradeUserStat(stat):
         TrySpendGold(cost)
         
 def StartFreezer():
-    global freezer_timer, chain_lightning_timer, flame_thrower_timer
+    global freezer_timer
     freezer_timer = GetUserStat(EStat.FREEZE).stat
-    chain_lightning_timer = 0.0
-    flame_thrower_timer = 0.0
     
 def StartChainLightning():
-    global freezer_timer, chain_lightning_timer, flame_thrower_timer
-    freezer_timer = 0.0
+    global chain_lightning_timer
     chain_lightning_timer = 5.0
-    flame_thrower_timer = 0.0
 
 def StartFlameThrower():
-    global freezer_timer, chain_lightning_timer, flame_thrower_timer
-    freezer_timer = 0.0
-    chain_lightning_timer = 0.0
+    global flame_thrower_timer
     flame_thrower_timer = GetUserStat(EStat.FLAME_THROWER).stat
     
 def GetFreezerTimer():

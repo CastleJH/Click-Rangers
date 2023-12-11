@@ -21,13 +21,12 @@ def UpgradeMatchingStatWithKey(event):
             UpgradeUserStat(GetUserStat(EStat(7)))
             
 def AttackWithUserMouseClick(event, mouse_pos):
-    if GetFlameThrowerTimer() <= 0.0:
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if GetChaingLightningTimer() > 0.0:
-                    ChainLightningAttack(mouse_pos)
-                else:
-                    NormalAttack(mouse_pos)
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 1:
+            if GetChaingLightningTimer() > 0.0:
+                ChainLightningAttack(mouse_pos)
+            else:
+                NormalAttack(mouse_pos)
         
 def AttackWithUserMousePosition(mouse_pos):
     if GetFlameThrowerTimer() > 0.0:
