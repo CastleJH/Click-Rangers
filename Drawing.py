@@ -117,8 +117,8 @@ def DrawChainLightning(screen, delta_seconds):
 def DrawGameOver(screen):
     global is_gameover, WINDOW_WIDTH, WINDOW_HEIGHT
     if GetGameOver():
-        DrawText(screen, f_b_30, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 50), "GAME OVER!", (255, 50, 50), 'c')
-        DrawText(screen, f_b_20, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 ), "Press [SpaceBar] to restart", (255, 255, 255), 'c')
+        DrawText(screen, f_b_30, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 70), "GAME OVER!", (255, 50, 50), 'c')
+        DrawText(screen, f_b_20, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 20), "Press [SpaceBar] to restart", (255, 255, 255), 'c')
 
 def DrawStartGame(screen):
     global is_playing, WINDOW_WIDTH, WINDOW_HEIGHT

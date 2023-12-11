@@ -8,6 +8,7 @@ WINDOW_HEIGHT = 1000
 screen = 0
 bottom_line_y = WINDOW_HEIGHT - 150
 max_game_level = 50
+master_volume = 0.5
 
 #---------------game state(changed over game)
 game_level = 1
@@ -19,6 +20,10 @@ spawn_cooltime = 0.0
 chain_lightning_targets = []
 
 #---------------function
+def GetMasterVolume():
+    global master_volume
+    return master_volume
+
 def GetGameLevel():
     global game_level
     return game_level
@@ -104,25 +109,38 @@ def DeleteObjectsOutOfGame():
 def NormalAttack(mouse_pos):
     global falling_objects
     remove_list = []
+    attacked = 0
     for key in falling_objects:
         if falling_objects[key].CheckOverlappedCircle(mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat):
             falling_objects[key].OnAttacked()
+            if isinstance(falling_objects[key], Drop) or isinstance(falling_objects[key], ChainLightning) or isinstance(falling_objects[key], FlameThrower) or isinstance(falling_objects[key], Freezer):
+                attacked = 1
+            elif isinstance(falling_objects[key], HealOrb):
+                attacked = 2
+            elif isinstance(falling_objects[key], Coin):
+                attacked = 3
+            elif isinstance(falling_objects[key], Trap):
+                attacked = 4
         if falling_objects[key].del_timer > 10:
             remove_list.append(key)
     for key in remove_list:
         RemoveFallingObject(key)
+    return attacked
         
         
 def FlameAttack(mouse_pos):
     global falling_objects
     remove_list = []
+    attacked = False
     for key in falling_objects:
         if (falling_objects[key].immune_to_flame == False) and falling_objects[key].CheckOverlappedCircle(mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat):
             falling_objects[key].OnAttacked()
+            attacked = True
         if falling_objects[key].del_timer > 10:
             remove_list.append(key)
     for key in remove_list:
         RemoveFallingObject(key)
+    return attacked
 
 def custom_sort(FallingObj, mouse_pos):
     return (FallingObj.x - mouse_pos[0]) ** 2 + (FallingObj.y - mouse_pos[1]) ** 2
@@ -147,9 +165,12 @@ def GetChainLightningTarget():
     
 def ChainLightningAttack(mouse_pos):
     global chain_lightning_targets
+    attacked = False
     chain_lightning_targets = CalcChainLigtningTarget(mouse_pos)
     for drop in chain_lightning_targets:
         drop.OnAttacked()
+        attacked = True
+    return attacked
     
 def TryIncreaseGameLevel(delta_seconds):
     global level_up_timer, max_game_level, game_level

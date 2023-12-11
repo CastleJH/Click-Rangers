@@ -14,7 +14,6 @@ freezer_image = None
 chain_lightning_image = None
 flame_thrower_image = None
 
-
 def PrepareImage():
     global ring_images, coin_image, heal_orb_image, trap_image, freezer_image, chain_lightning_image, flame_thrower_image
     image = pygame.image.load("resources/Rings.png")

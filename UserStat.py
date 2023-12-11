@@ -122,7 +122,8 @@ def UpgradeUserStat(stat):
     global gold
     cost = stat.real_cost
     if cost <= gold and stat.Upgrade():
-        TrySpendGold(cost)
+        return TrySpendGold(cost)
+    return False
         
 def StartFreezer():
     global freezer_timer
