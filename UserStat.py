@@ -38,10 +38,10 @@ class StatData():
             return False
        
 user_stats = [      #stat name,     base stat,  max level,  base cost,  stat modifier,  uprade key
-    StatData(       "Radius",       20,         10,         2,          4,          'Q'),
+    StatData(       "Radius",       20,         10,         2,          5,          'Q'),
     StatData(       "Max HP",       100,        999,        1,          10,         'W'),
     StatData(       "Heal Orb",     10,         5,          2,          2,          'E'),
-    StatData(       "Gold",         1,          5,          2,          1,          'R'),
+    StatData(       "Gold",         5,          5,          2,          1,          'R'),
     StatData(       "Fall Speed",   1.0,        10,         2,          -0.05,      'A'),
     StatData(       "Blizzard",     3.0,        999,        5,          0.2,        'S'),
     StatData(       "Lightning", 2,       999,        7,          1,          'D'),
@@ -49,22 +49,42 @@ user_stats = [      #stat name,     base stat,  max level,  base cost,  stat mod
 ]
 
 score = 0
-gold = 10000
+gold = 0
 max_hp = user_stats[int(EStat.MAX_HP)].stat
 current_hp = max_hp
 freezer_timer = 0
 chain_lightning_timer = 0
 flame_thrower_timer = 0
 
+def ResetUserStat():
+    global user_stats, score, gold, max_hp, current_hp, freezer_timer, chain_lightning_timer, flame_thrower_timer
+    user_stats = [      #stat name,     base stat,  max level,  base cost,  stat modifier,  uprade key
+        StatData(       "Radius",       20,         10,         2,          5,          'Q'),
+        StatData(       "Max HP",       100,        999,        1,          10,         'W'),
+        StatData(       "Heal Orb",     10,         5,          2,          2,          'E'),
+        StatData(       "Gold",         5,          5,          2,          1,          'R'),
+        StatData(       "Fall Speed",   1.0,        10,         2,          -0.05,      'A'),
+        StatData(       "Blizzard",     3.0,        999,        5,          0.2,        'S'),
+        StatData(       "Lightning", 2,       999,        7,          1,          'D'),
+        StatData(       "Flame",   5.0,     999,        7,          0.5,        'F')
+    ]
+
+    score = 0
+    gold = 0
+    max_hp = user_stats[int(EStat.MAX_HP)].stat
+    current_hp = max_hp
+    freezer_timer = 0
+    chain_lightning_timer = 0
+    flame_thrower_timer = 0
+    
+
 def GetUserStat(Index):
     global user_stats
     return user_stats[int(Index)]
 
 def TryDecreaseHP(ammount):
-    global current_hp
+    global current_hp, is_gameover
     current_hp = max(0, current_hp - ammount)
-    if current_hp == 0:
-        is_gameover = True
 
 def TryHealHP(ammount):
     global current_hp

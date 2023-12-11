@@ -101,6 +101,7 @@ class FallingObject():
         self.fragments_location = [[0, 0] for i in range(fragments_num)]
         self.fragments_color = [(0, 0, 0) for i in range(fragments_num)]
         self.fragments_velocity = [[np.random.uniform(-1.0, 1.0), np.random.uniform(-3.0, -5.0)] for i in range(fragments_num)]
+        self.immune_to_flame = True
         
     def update(self, delta_seconds, fall_speed_modifier, bottom_line_y):
         if self.is_alive:
@@ -140,7 +141,7 @@ class FallingObject():
         
     def DrawDead(self, screen):
         for i, loc in enumerate(self.fragments_location):
-            pygame.draw.circle(screen, self.fragments_color[i], [self.x + loc[0], self.y + loc[1]], 1)
+            pygame.draw.circle(screen, self.fragments_color[i], [self.x + loc[0], self.y + loc[1]], 2)
     
     def DrawAlive(self, screen):
         return
@@ -166,6 +167,7 @@ class Drop(FallingObject):
         self.radius = np.random.uniform(fallings_radius[0], fallings_radius[1])
         self.image = pygame.transform.scale(ring_images[np.random.randint(0, len(ring_images))], (self.radius * 2.0, self.radius * 2.0))
         self.score = round(np.interp(self.radius, fallings_radius, [1.0, 5.0]))
+        self.immune_to_flame = False
         
     def DrawAlive(self, screen):
         super().DrawAlive(screen)
@@ -336,4 +338,8 @@ def AddFallingObject(index, object):
     
 def RemoveFallingObject(index):
     falling_objects.pop(index)
+    
+def ResetFallingObjects():
+    global falling_objects
+    falling_objects.clear()
     

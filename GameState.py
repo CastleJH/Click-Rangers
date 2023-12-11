@@ -7,11 +7,11 @@ WINDOW_WIDTH = 1000
 WINDOW_HEIGHT = 1000
 screen = 0
 bottom_line_y = WINDOW_HEIGHT - 150
+max_game_level = 50
 
 #---------------game state(changed over game)
-game_level = 20
-max_game_level = 50
-is_playing = True
+game_level = 1
+is_playing = False
 is_gameover = False
 new_falling_idx = 0
 level_up_timer = 0.0
@@ -23,6 +23,18 @@ def GetGameLevel():
     global game_level
     return game_level
 
+def GetGamePlaying():
+    global is_playing
+    return is_playing
+
+def GetGameOver():
+    global is_gameover
+    return is_gameover
+
+def SetGameOver(over):
+    global is_gameover
+    is_gameover = over
+
 def GetFallSpeedModifier():
     freeze_mult = 1.0
     if GetFreezerTimer() > 0.0:
@@ -31,7 +43,6 @@ def GetFallSpeedModifier():
 
 def SpawnFallingObjects(delta_seconds):
     global new_falling_idx, spawn_cooltime
-    
     spawn_cooltime += delta_seconds
     
     if spawn_cooltime < 0.1:
@@ -47,7 +58,7 @@ def SpawnFallingObjects(delta_seconds):
     base_chain_lightning_rate = 0.01
     base_flame_thrower_rate = 0.01
 
-    if np.random.uniform(0.0, 1.0) < base_drop_rate * np.interp(float(game_level), [1.0, 50.0], [1.0, 10.0]):
+    if np.random.uniform(0.0, 1.0) < base_drop_rate * np.interp(float(game_level), [1.0, 50.0], [1.0, 20.0]):
         AddFallingObject(new_falling_idx, Drop(new_falling_idx, WINDOW_WIDTH))
         new_falling_idx += 1
         
@@ -90,8 +101,8 @@ def DeleteObjectsOutOfGame():
     for key in remove_list:
         RemoveFallingObject(key)
         
-def CheckDropsCollision(mouse_pos):
-    global falling_objects, FPS
+def NormalAttack(mouse_pos):
+    global falling_objects
     remove_list = []
     for key in falling_objects:
         if falling_objects[key].CheckOverlappedCircle(mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat):
@@ -101,8 +112,17 @@ def CheckDropsCollision(mouse_pos):
     for key in remove_list:
         RemoveFallingObject(key)
         
-def NormalAttack(mouse_pos):
-    CheckDropsCollision(mouse_pos)
+        
+def FlameAttack(mouse_pos):
+    global falling_objects
+    remove_list = []
+    for key in falling_objects:
+        if (falling_objects[key].immune_to_flame == False) and falling_objects[key].CheckOverlappedCircle(mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat):
+            falling_objects[key].OnAttacked()
+        if falling_objects[key].del_timer > 10:
+            remove_list.append(key)
+    for key in remove_list:
+        RemoveFallingObject(key)
 
 def custom_sort(FallingObj, mouse_pos):
     return (FallingObj.x - mouse_pos[0]) ** 2 + (FallingObj.y - mouse_pos[1]) ** 2
@@ -134,14 +154,35 @@ def ChainLightningAttack(mouse_pos):
 def TryIncreaseGameLevel(delta_seconds):
     global level_up_timer, max_game_level, game_level
     level_up_timer += delta_seconds
-    if level_up_timer >= 10.0:
+    if level_up_timer >= 5.0:
         level_up_timer = 0.0
         game_level = min(max_game_level, game_level + 1)
     
 def UpdateGameState(delta_seconds):
-    TryIncreaseGameLevel(delta_seconds)
-    DecreaseAttackTypeTimer(delta_seconds)
-    
-    SpawnFallingObjects(delta_seconds)
-    UpdateFallingObjects(delta_seconds)
-    DeleteObjectsOutOfGame()
+    global is_playing
+    if is_playing:        
+        TryIncreaseGameLevel(delta_seconds)
+        DecreaseAttackTypeTimer(delta_seconds)
+        
+        SpawnFallingObjects(delta_seconds)
+        UpdateFallingObjects(delta_seconds)
+        DeleteObjectsOutOfGame()
+        
+        if GetCurrentHP() <= 0.0:
+            SetGameOver(True)
+        
+def StartGame():
+    global is_playing, game_level, is_gameover, new_falling_idx, level_up_timer, spawn_cooltime, chain_lightning_targets
+    if not is_playing or is_gameover:
+        print("start!")
+        is_playing = True
+        game_level = 1
+        is_playing = True
+        is_gameover = False
+        new_falling_idx = 0
+        level_up_timer = 0.0
+        spawn_cooltime = 0.0
+        chain_lightning_targets = []
+        
+        ResetUserStat()
+        ResetFallingObjects()

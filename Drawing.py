@@ -61,7 +61,10 @@ def DrawUpgradeInfo(screen):
             if stat.level != stat.max_level:
                 level_text = str(stat.level)
             DrawText(screen, f_l_15, (30 + x_off + x_diff * j, y_off + y_diff * i), "lv.{}".format(level_text), (50, 150, 255))
-            DrawText(screen, f_l_15, (80 + x_off + x_diff * j, y_off + y_diff * i), "{}".format(stat.stat_name), (255, 255, 255))
+            color = (255, 255, 255)
+            if stat.real_cost <= GetGold():
+                color = (255, 200, 0)    
+            DrawText(screen, f_l_15, (80 + x_off + x_diff * j, y_off + y_diff * i), "{}".format(stat.stat_name), color)
             DrawText(screen, f_l_15, (x_diff - 40 + x_off + x_diff * j, y_off + y_diff * i), "{}G".format(stat.real_cost), (255, 200, 0), 'r')
         
 
@@ -85,11 +88,10 @@ def DrawUI(screen):
 
 def DrawUserMouse(screen, mouse_pos):
     if GetFlameThrowerTimer() > 0.0:
-        pygame.draw.circle(screen, (255, 0, 0), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
-    elif GetChaingLightningTimer() > 0.0:
-        pygame.draw.circle(screen, (255, 255, 0), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
-    else:
-        pygame.draw.circle(screen, (255, 255, 255), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).base_stat)
+        pygame.draw.circle(screen, (255, 0, 0), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat * 0.6, 5)
+    if GetChaingLightningTimer() > 0.0:
+        pygame.draw.circle(screen, (255, 255, 0), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat * 0.8, 3)
+    pygame.draw.circle(screen, (255, 255, 255), mouse_pos, GetUserStat(EStat.MOUSE_RADIUS).stat, 3)
     
 def AddChainLightning(obj_list, mouse_pos):
     global chain_lightning_trail
@@ -112,6 +114,17 @@ def DrawChainLightning(screen, delta_seconds):
         else:
             pygame.draw.line(screen, (trail[1], trail[2], trail[3]), (trail[4], trail[5]), (trail[6], trail[7]))
         
+def DrawGameOver(screen):
+    global is_gameover, WINDOW_WIDTH, WINDOW_HEIGHT
+    if GetGameOver():
+        DrawText(screen, f_b_30, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 50), "GAME OVER!", (255, 50, 50), 'c')
+        DrawText(screen, f_b_20, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 ), "Press [SpaceBar] to restart", (255, 255, 255), 'c')
+
+def DrawStartGame(screen):
+    global is_playing, WINDOW_WIDTH, WINDOW_HEIGHT
+    if not GetGamePlaying():
+        DrawText(screen, f_b_30, (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 50), "Press [SpaceBar] to start", (255, 255, 255), 'c')
+        
 def DrawGame(delta_seconds, screen, mouse_pos):
     DrawBackground(screen)
     if GetChainLightningUsed(): 
@@ -120,5 +133,7 @@ def DrawGame(delta_seconds, screen, mouse_pos):
     DrawFallingObjects(screen)
     DrawBottomline(screen)
     DrawUI(screen)
+    DrawGameOver(screen)
+    DrawStartGame(screen)
     DrawUserMouse(screen, mouse_pos)
     pygame.display.flip()

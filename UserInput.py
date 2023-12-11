@@ -34,7 +34,7 @@ def AttackWithUserMouseClick(event, mouse_pos):
         
 def AttackWithUserMousePosition(mouse_pos):
     if GetFlameThrowerTimer() > 0.0:
-        NormalAttack(mouse_pos)
+        FlameAttack(mouse_pos)
         
 def GetChainLightningUsed():
     global chain_lightning_used
@@ -48,6 +48,9 @@ def ProcessUserInput():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True    
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                StartGame()
         UpgradeMatchingStatWithKey(event)
         AttackWithUserMouseClick(event, mouse_pos)
     AttackWithUserMousePosition(mouse_pos)
