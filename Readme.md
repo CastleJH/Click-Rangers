@@ -10,7 +10,7 @@
    You can check the upgrading buttons on the bottom panel of the screen.
 3. Click the heal orb to heal HP. 
    When HP reaches 0, it is game over, so keep check on your HP.
-4. Do NOT click trap. It decreases your HP.
+4. Do **NOT** click trap. It decreases your HP.
 5. Click Freezer orb to slow down all fallings for several seconds.
    Duration time depends on your upgrade level.
 6. Click Flame orb to activate flame for several seconds.
@@ -33,5 +33,5 @@
 
 **Below are links where i got the assets for this project.**
 1. background image: https://opengameart.org/content/ruined-city-background
-2. All other files in /resources are made by myself, so please don't copy. 
+2. All other files in /resources are made by myself, so **please don't copy**. 
    Instead, ask me when you want to use them.
