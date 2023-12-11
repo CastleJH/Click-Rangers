@@ -51,6 +51,9 @@ score = 0
 gold = 0
 max_hp = user_stats[int(EStat.MAX_HP)].stat
 current_hp = max_hp
+freezer_timer = 0
+chain_lightning_timer = 0
+flame_thrower_timer = 0
 
 def GetUserStat(Index):
     global user_stats
@@ -87,3 +90,21 @@ def UpgradeUserStat(stat):
     cost = stat.real_cost
     if cost <= gold and stat.Upgrade():
         TrySpendGold(cost)
+        
+def StartFreezer():
+    global freezer_timer, chain_lightning_timer, flame_thrower_timer
+    freezer_timer = GetUserStat(EStat.FREEZE).stat
+    chain_lightning_timer = 0.0
+    flame_thrower_timer = 0.0
+    
+def StartChainLightning():
+    global freezer_timer, chain_lightning_timer, flame_thrower_timer
+    freezer_timer = 0.0
+    chain_lightning_timer = 5.0
+    flame_thrower_timer = 0.0
+
+def StartFlameThrower():
+    global freezer_timer, chain_lightning_timer, flame_thrower_timer
+    freezer_timer = 0.0
+    chain_lightning_timer = 0.0
+    flame_thrower_timer = GetUserStat(EStat.FLAME_THROWER).stat

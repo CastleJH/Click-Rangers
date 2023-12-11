@@ -27,6 +27,9 @@ def SpawnFallingObjects():
     base_coin_rate = 0.005
     base_heal_orb_rate = 0.005
     base_trap_rate = 0.005
+    base_freezer_rate = 0.0005
+    base_chain_lightning_rate = 0.0005
+    base_flame_thrower_rate = 0.0005
 
     if np.random.uniform(0.0, 1.0) < base_drop_rate * np.interp(float(min(game_level, 50)), [1.0, 50.0], [1.0, 5.0]):
         AddFallingObject(new_falling_idx, Drop(new_falling_idx, WINDOW_WIDTH))
@@ -42,6 +45,18 @@ def SpawnFallingObjects():
         
     if np.random.uniform(0.0, 1.0) < base_trap_rate:
         AddFallingObject(new_falling_idx, Trap(new_falling_idx, WINDOW_WIDTH))
+        new_falling_idx += 1
+        
+    if np.random.uniform(0.0, 1.0) < base_freezer_rate:
+        AddFallingObject(new_falling_idx, Freezer(new_falling_idx, WINDOW_WIDTH))
+        new_falling_idx += 1
+        
+    if np.random.uniform(0.0, 1.0) < base_chain_lightning_rate:
+        AddFallingObject(new_falling_idx, ChainLightning(new_falling_idx, WINDOW_WIDTH))
+        new_falling_idx += 1
+        
+    if np.random.uniform(0.0, 1.0) < base_flame_thrower_rate:
+        AddFallingObject(new_falling_idx, FlameThrower(new_falling_idx, WINDOW_WIDTH))
         new_falling_idx += 1
     return
     

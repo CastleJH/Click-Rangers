@@ -11,7 +11,7 @@ falling_objects = {}
 class FallingObject():
     def __init__(self, _index, _window_width):
         self.index = _index
-        self.radius = np.random.uniform(fallings_radius[0], fallings_radius[1])
+        self.radius = 20
         self.line = round(np.interp(self.radius, fallings_radius, [5.0, 9.0]))
         self.x = np.random.uniform(self.radius, _window_width - self.radius)
         self.y = -18
@@ -94,6 +94,7 @@ class FallingObject():
 class Drop(FallingObject):
     def __init__(self, _index, _window_width):
         super().__init__(_index, _window_width)
+        self.radius = np.random.uniform(fallings_radius[0], fallings_radius[1])
         self.score = round(np.interp(self.radius, fallings_radius, [1.0, 5.0]))
         
     def DrawAlive(self, screen):
@@ -123,11 +124,7 @@ class Drop(FallingObject):
         if self.is_alive :
             self.current_color = self.base_color
        
-class Coin(FallingObject):
-    def __init__(self, _index, _window_width):
-        super().__init__(_index, _window_width)
-        self.radius = 20
-        
+class Coin(FallingObject):        
     def DrawAlive(self, screen):
         super().DrawAlive(screen)
         pygame.draw.circle(screen, (250, 200, 0), [self.x, self.y], self.radius)
@@ -149,10 +146,6 @@ class Coin(FallingObject):
         return
         
 class HealOrb(FallingObject):
-    def __init__(self, _index, _window_width):
-        super().__init__(_index, _window_width)
-        self.radius = 20
-        
     def DrawAlive(self, screen):
         super().DrawAlive(screen)
         pygame.draw.circle(screen, (255, 100, 100), [self.x, self.y], self.radius)
@@ -172,20 +165,19 @@ class HealOrb(FallingObject):
     def OnMelted(self):
         return
         
-class Trap(FallingObject):
+class Trap(FallingObject):    
     def __init__(self, _index, _window_width):
         super().__init__(_index, _window_width)
-        self.radius = 20
         self.base_color = (100, 100, 100)
         self.current_color = self.base_color
-        
+            
     def DrawAlive(self, screen):
         super().DrawAlive(screen)
         pygame.draw.circle(screen, self.base_color, [self.x, self.y], self.radius)
         
     def OnTouchedLine(self):
         super().OnTouchedLine()
-        self.SetFragmentsColor(False)
+        self.SetFragmentsColor(True, [(100, 100, 100), (50, 50, 50), (150, 150, 150)])
         
     def OnAttacked(self):
         TryDecreaseHP(10)
@@ -196,8 +188,72 @@ class Trap(FallingObject):
     def OnMelted(self):
         return
 
+class Freezer(FallingObject):
+    def DrawAlive(self, screen):
+        super().DrawAlive(screen)
+        pygame.draw.circle(screen, (100, 255, 255), [self.x, self.y], self.radius)
+        pygame.draw.circle(screen, (255, 255, 255), [self.x, self.y], self.radius * 0.3)
+        
+    def OnTouchedLine(self):
+        super().OnTouchedLine()
+        self.SetFragmentsColor(True, [(0, 255, 255), (255, 255, 255)])
+        
+    def OnAttacked(self):
+        super().OnAttacked()
+        StartFreezer()
+        self.SetFragmentsColor(True, [(0, 255, 255), (255, 255, 255)])
+                  
+    def OnFreezed(self):
+        return
+    
+    def OnMelted(self):
+        return
+
+class ChainLightning(FallingObject):
+    def DrawAlive(self, screen):
+        super().DrawAlive(screen)
+        pygame.draw.circle(screen, (255, 255, 0), [self.x, self.y], self.radius)
+        pygame.draw.circle(screen, (255, 255, 255), [self.x, self.y], self.radius * 0.3)
+        
+    def OnTouchedLine(self):
+        super().OnTouchedLine()
+        self.SetFragmentsColor(True, [(255, 255, 100), (255, 255, 255)])
+        
+    def OnAttacked(self):
+        super().OnAttacked()
+        StartChainLightning()
+        self.SetFragmentsColor(True, [(255, 255, 100), (255, 255, 255)])
+                  
+    def OnFreezed(self):
+        return
+    
+    def OnMelted(self):
+        return
+
+class FlameThrower(FallingObject):
+    def DrawAlive(self, screen):
+        super().DrawAlive(screen)
+        pygame.draw.circle(screen, (255, 0, 0), [self.x, self.y], self.radius)
+        pygame.draw.circle(screen, (255, 200, 0), [self.x, self.y], self.radius * 0.3)
+        
+    def OnTouchedLine(self):
+        super().OnTouchedLine()
+        self.SetFragmentsColor(True, [(255, 0, 0), (255, 200, 0)])
+        
+    def OnAttacked(self):
+        super().OnAttacked()
+        StartFlameThrower()
+        self.SetFragmentsColor(True, [(255, 0, 0), (255, 200, 0)])
+                  
+    def OnFreezed(self):
+        return
+    
+    def OnMelted(self):
+        return
+    
 def AddFallingObject(index, object):
     falling_objects[index] = object
     
 def RemoveFallingObject(index):
     falling_objects.pop(index)
+    
