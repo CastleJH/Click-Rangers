@@ -35,7 +35,7 @@ class StatData():
             return True
         else: 
             return False
-        
+       
 user_stats = [      #stat name,     base stat,  max level,  base cost,  stat modifier
     StatData(       "Mouse Radius", 20,         10,         2,          4),
     StatData(       "Max HP",       100,        999,        1,          10),
@@ -47,6 +47,43 @@ user_stats = [      #stat name,     base stat,  max level,  base cost,  stat mod
     StatData(       "Flame Thrower",   5.0,     999,        7,          0.5)
 ]
 
+score = 0
+gold = 0
+max_hp = user_stats[int(EStat.MAX_HP)].stat
+current_hp = max_hp
+
 def GetUserStat(Index):
     global user_stats
     return user_stats[int(Index)]
+
+def TryDecreaseHP(ammount):
+    global current_hp
+    current_hp = max(0, current_hp - ammount)
+    if current_hp == 0:
+        is_gameover = True
+
+def TryHealHP(ammount):
+    global current_hp
+    current_hp = min(max_hp, current_hp + ammount)
+    
+def GetScore(ammount):
+    global score
+    score += ammount
+    
+def AddGold(ammount):
+    global gold
+    gold += ammount
+    
+def TrySpendGold(ammount):
+    global gold
+    if gold < ammount:
+        return False
+    else:
+        gold -= ammount
+        return True
+
+def UpgradeUserStat(stat):
+    global gold
+    cost = stat.real_cost
+    if cost <= gold and stat.Upgrade():
+        TrySpendGold(cost)
