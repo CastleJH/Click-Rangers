@@ -34,5 +34,6 @@
 **Below are links where I got the assets for this project.**
 1. background image: https://opengameart.org/content/ruined-city-background
 2. font files: https://m.blog.naver.com/campanula913/221366697603
-3. All other files in /resources are made by myself, so **please don't copy**. 
+3. SFX: https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
+4. All other audio and image files in /resources are made by myself, so **please don't copy**. 
    Instead, ask me when you want to use them.
