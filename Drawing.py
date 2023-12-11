@@ -35,11 +35,9 @@ def DrawText(screen, font, loc, text, color = (255, 255, 255), align = "l"):
     
     
 def DrawBackground(screen):
-    #screen.fill(0)
     if background_image == None:
         PrepareBackgroundImage()
     screen.blit(background_image, (0, -WINDOW_HEIGHT // 3))
-    #screen.fill((0, 0, 0, 250))
     return
 
 def DrawFallingObjects(screen):
@@ -48,7 +46,7 @@ def DrawFallingObjects(screen):
 
 def DrawBottomline(screen):
     global bottom_line_y, WINDOW_WIDTH
-    pygame.draw.rect(screen, (0, 0, 0, 30), (0, bottom_line_y, WINDOW_WIDTH, 500))
+    pygame.draw.rect(screen, (15, 15, 15), (0, bottom_line_y, WINDOW_WIDTH, 500))
     pygame.draw.line(screen, (255, 0, 0), (0, bottom_line_y), (WINDOW_WIDTH, bottom_line_y), 5)
     
     return 
